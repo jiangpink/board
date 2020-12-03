@@ -44,7 +44,7 @@ function getAll(){
                     else{
                     ul += '         <div class="id" style="display:none">'+id+'</div>';
                     }
-                    ul += '         <div class="nickname">'+'<a href="person.html">'+nickname+'</a>'+'</div>';
+                    ul += '         <div class="nickname">'+nickname+'</div>';
                     ul += '         <div class="date">'+date+'</div>';
                     ul += '         <fieldset class="text">'+text+'</fieldset>';
                     ul += '         <div class="last">'+last+'</div>';
