@@ -24,7 +24,8 @@ function getAll(){
                     ul += '         <div class="last">last</div>';
                     ul += '     </div>'
                     ul += '</li>'
-                }    
+                }
+                document.getElementById("UL").innerHTML= ul ;   
             }
         }
     }
