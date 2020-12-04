@@ -8,7 +8,7 @@ window.onload=function getLoginUser(){
             if(getRequest.status == 200){
                 var x= getRequest.response;
                 var y= eval("("+x+")");
-                document.getElementById("username").innerHTML=x["username"];
+                document.getElementById("username").innerHTML=y["username"];
             }
             else{
                 console.log(getRequest.responseText)
@@ -46,10 +46,12 @@ function change(){
     var postRequest = new XMLHttpRequest()
     postRequest.open('POST',BaseURL + '/userinfo/modification')
     postRequest.send()
+    var obj = document.getElementById("gender1");
+    var index =obj.selectedIndex;
     var postData = {
         nickname: document.getElementById("nickname1").value,
         age: document.getElementById("age1").value,
-        gender: document.getElementById("gender1").value,
+        gender: obj.options[index].text,
         password: document.getElementById("password1").value,
     }
     postRequest.setRequestHeader("Content-type","application/json")
@@ -62,7 +64,6 @@ function change(){
                 console.log(y["message"])
                 document.getElementById("nickname1").innerHTML=""
                 document.getElementById("age1").innerHTML=""
-                document.getElementById("gender1").innerHTML=""
                 document.getElementById("password1").innerHTML=""
                 getInfo()
             }
