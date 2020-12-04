@@ -56,7 +56,9 @@ function getAll(){
         }
     }
 }
+
 getAll()
+
 function postComment(){
     var postRequest = new XMLHttpRequest()
     postRequest.open("POST",BaseURL+'/board/add')

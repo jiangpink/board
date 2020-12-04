@@ -2,50 +2,35 @@
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="stylesheet" href="person.css" />
 <title>person</title>
 </head>
 <body>
-    <input type="button" value="注销" style="float:right;" onclick="logout()" />
-    <p id="username" style="display:none;"></p>
-    <div>
+    <input type="button" value="注销" class="right" onclick="logout()" /> <input type="button" value="返回" class="right" onclick="location.href='board.html'" />
+    <p id="username" class="username"></p>
+    <div class="info">
+        <h2>个人信息</h2>
         <div id="username0">用户名:</div>
         <div id="nickname">昵称:</div>
         <div id="age">年龄:</div>
         <div id="gender">性别:</div>
-    <div>
-    <form>
-        <fieldset>
-        <legend>修改</legend>
-        <table>
-            <tr>
-                <td>昵称</td>
-                <td><input type="text" id="nickname1" /></td>
-            </tr>
-            <tr>
-                <td>年龄</td>
-                <td><input type="text" id="age1" /></td>
-            </tr>
-            <tr>
-                <td>性别</td>
-                <td>
-                    <select name="gender" id=“gender1”>
-                        <option value="请选择" selected="selected">请选择</option>
-                        <option value="男">男</option>
-                        <option value="女">女</option>
-                        <option value="保密">保密</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>密码</td>
-                <td><input type="password" id="password1" /></td>
-            </tr>
-        </table>
-        <label id="change"><input type="button" value="修改" /></label>
-        </fieldset>
-    </form>
-    <div id="alert"></div>
     </div>
+    <p></p>
+    <p></p>
+    <div>
+        <h3>修改</h3>
+        <p>昵称<input type="text" id="nickname1"/></p>
+        <p>年龄<input type="text" id="age1"/></p>
+        <p>性别<select name="gender" id=“gender1” class="item">
+                    <option value="请选择" selected="selected">请选择</option>
+                    <option value="男">男</option>
+                    <option value="女">女</option>
+                    <option value="保密">保密</option>
+                </select></p>
+        <p>密码<input type="password" id="password1" /></p>
+        <label id="change"><input type="button" value="修改" /></label>
+    </div>
+    <div id="alert"></div>
 </body>
 <script src="person.js"></script>
 </html>
