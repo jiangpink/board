@@ -8,7 +8,6 @@ function getAll(){
             if(getRequest.status == 200){
                 var x = getRequest.responseText;
                 var comments = eval("("+x+")");
-                document.getElementById("test").innerHTML=comments
                 document.getElementsByTagName('ul')[0].innerHTML = ""
                 var ul = "";
                 for (var i=0 ; i < comments.length ; i++ ){

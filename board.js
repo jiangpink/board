@@ -8,7 +8,7 @@ window.onload=function getLoginUser(){
             if(getRequest.status == 200){
                 var x= getRequest.response;
                 var y= eval("("+x+")");
-                document.getElementById("username").innerHTML=x["username"];
+                document.getElementById("username").innerHTML=y["username"];
             }
             else{
                 console.log(getRequest.responseText)

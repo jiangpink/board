@@ -13,7 +13,6 @@ function postUser(){
             if (postRequest.status ==200) {
                 var x= postRequest.response;
                 var y= eval("("+x+")");
-                var username = y["username"];
                 console.log(y["message"])
                 document.getElementById("alert").innerHTML=""
                 window.location.href="board.html"
