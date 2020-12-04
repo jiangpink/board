@@ -60,7 +60,7 @@ function change(){
                 var x = postRequest.response;
                 var y = eval("("+x+")");
                 console.log(y["message"])
-                ocument.getElementById("nickname1").innerHTML=""
+                document.getElementById("nickname1").innerHTML=""
                 document.getElementById("age1").innerHTML=""
                 document.getElementById("gender1").innerHTML=""
                 document.getElementById("password1").innerHTML=""
