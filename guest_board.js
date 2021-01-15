@@ -26,7 +26,7 @@ function getAll(){
                     var a3 = document.createElement("div");
                     a3.innerText = text ;
                     a3.className = "text";
-                    a3.style['overflow']='auto'
+                    a3.style['overflow']='auto';
                     a.appendChild(a3);
                     var a4 = document.createElement("div");
                     a4.innerText = last ;
