@@ -6,26 +6,34 @@ function getAll(){
     getRequest.onreadystatechange = function() {
         if(getRequest.readyState == 4){
             if(getRequest.status == 200){
-                var x = getRequest.responseText;
-                var comments = eval("("+x+")");
-                document.getElementsByTagName('ul')[0].innerHTML = ""
-                var ul = "";
-                for (var i=0 ; i < comments.length ; i++ ){
-                    var ls = comments["board"];
-                    var nickname = ls[i]["nickname"];
-                    var text = ls[i]["text"];
-                    var date = ls[i]["date"];
-                    var last = ls[i]["last"];
-                    ul += '<li class="item">';
-                    ul += '     <div class="info">';
-                    ul += '         <div class="nickname">'+nickname+'</div>';
-                    ul += '         <div class="date">'+date+'</div>';
-                    ul += '         <div class="text">'+text+'</div>';
-                    ul += '         <div class="last">'+last+'</div>';
-                    ul += '     </div>'
-                    ul += '</li>'
-                }
-                document.getElementById("UL").innerHTML= ul ;   
+                let obj = JSON.parse(getRequest.response) ;
+                let board = obj.board ;
+                document.getElementsByTagName('form')[0].innerHTML = ""
+                for (var i=0 ; i < board.length ; i++ ){
+                    var nickname = board[i].nickname;
+                    var date = board[i].date;
+                    var text = board[i].text;
+                    var last = board[i].last;
+                    var a = document.createElement("div");
+                    var a1 = document.createElement("div");
+                    a1.innerText = nickname ;
+                    a1.className = "nickname";
+                    a.appendChild(a1);
+                    var a2 = document.createElement("div");
+                    a2.innerText = date ;
+                    a2.className = "date";
+                    a.appendChild(a2);
+                    var a3 = document.createElement("div");
+                    a3.innerText = text ;
+                    a3.className = "text";
+                    a3.style['overflow']='auto'
+                    a.appendChild(a3);
+                    var a4 = document.createElement("div");
+                    a4.innerText = last ;
+                    a4.className = "last";
+                    a.appendChild(a4);
+                    document.getElementsByTagName("form")[0].appendChild(a);
+                } 
             }
         }
     }
