@@ -7,13 +7,13 @@ function getAll(){
         if(getRequest.readyState == 4){
             if(getRequest.status == 200){
                 let obj = JSON.parse(getRequest.response) ;
-                let board = obj.board ;
+                let boards = obj.board ;
                 document.getElementsByTagName('form')[0].innerHTML = ""
-                for (var i=0 ; i < board.length ; i++ ){
-                    var nickname = board[i].nickname;
-                    var date = board[i].date;
-                    var text = board[i].text;
-                    var last = board[i].last;
+                for (var i=0 ; i < boards.length ; i++ ){
+                    var nickname = boards[i].nickname;
+                    var date = boards[i].date;
+                    var text = boards[i].text;
+                    var last = boards[i].last;
                     var a = document.createElement("div");
                     var a1 = document.createElement("div");
                     a1.innerText = nickname ;
