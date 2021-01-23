@@ -54,7 +54,7 @@ function change(){
     var postData = {
         nickname: document.getElementById("nickname1").value,
         age: document.getElementById("age1").value,
-        gender: obj.options[index].text,
+        gender: obj.options[index].value,
         password: document.getElementById("password1").value,
     }
     postRequest.setRequestHeader("Content-type","application/json")
