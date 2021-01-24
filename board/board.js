@@ -23,35 +23,50 @@ function getAll(){
     getRequest.onreadystatechange = function() {
         if(getRequest.readyState == 4){
             if(getRequest.status == 200){
-                var x = getRequest.response;
-                var comments = eval("("+x+")");
-                document.getElementsByTagName('ul')[0].innerHTML = ""
-                document.getElementById("alert")=""
-                var ul = "";
-                for (var i=0 ; i < x.length ; i++ ){
-                    var ls = comments["board"];
-                    var id = ls[i]["id"];
-                    var nickname = ls[i]["nickname"];
-                    var text = ls[i]["text"];
-                    var date = ls[i]["date"];
-                    var last = ls[i]["last"];
-                    var username =ls[i]["username"];
-                    ul += '<li class="item">';
-                    ul += '     <div class="info">';
+                let obj = JSON.parse(getRequest.responseText) ;
+                let board = obj.boards ;
+                document.getElementsByClassName('board')[0].innerHTML = ""
+                for (var i=0 ; i < board.length ; i++ ){
+                    var nickname = board[i].nickname;
+                    var date = board[i].date;
+                    var text = board[i].text;
+                    var last = board[i].last;
+                    var username =board[i].username;
+                    var id =board[i].id;
+                    var a = document.createElement("div");
                     if (username==document.getElementById("username").value){
-                    ul += '         <div class="id">'+id+'</div>';
-                    }
+                        var a1 = document.createElement("div");
+                        var b1 = document.createElement("div");
+                        b1.innerHTML = nickname ;
+                        b1.className = "nickname";
+                        a1.appendChild(b1);
+                        var b2 = document.createElement("div");
+                        b2.innerHTML = nickname ;
+                        b2.className = "id";
+                        a1.appendChild(b2);
+                        a.appendChild(a1);
+                        }
                     else{
-                    ul += '         <div class="id" style="display:none">'+id+'</div>';
+                        var a1 = document.createElement("div");
+                        a1.innerHTML = nickname ;
+                        a1.className = "nickname";
+                        a.appendChild(a1);
                     }
-                    ul += '         <div class="nickname">'+nickname+'</div>';
-                    ul += '         <div class="date">'+date+'</div>';
-                    ul += '         <fieldset class="text">'+text+'</fieldset>';
-                    ul += '         <div class="last">'+last+'</div>';
-                    ul += '     </div>'
-                    ul += '</li>'
-                }
-                document.getElementById("UL").innerHTML= ul ;    
+                    var a2 = document.createElement("div");
+                    a2.innerHTML = date ;
+                    a2.className = "date";
+                    a.appendChild(a2);
+                    var a3 = document.createElement("div");
+                    a3.innerHTML = text ;
+                    a3.className = "text";
+                    a3.style['overflow']='auto';
+                    a.appendChild(a3);
+                    var a4 = document.createElement("div");
+                    a4.innerHTML = "编辑：" + last ;
+                    a4.className = "last";
+                    a.appendChild(a4);
+                    document.getElementsByClassName("board")[0].appendChild(a);           
+                }   
             }
         }
     }
@@ -71,15 +86,18 @@ function postComment(){
     postRequest.onreadystatechange=function(){
         if(postRequest.readyState == 4){
             if(postRequest.status == 200){
-                var x= postRequest.response;
+                var x= postRequest.responseText;
                 var y= eval("("+x+")");
-                console.log(y["message"])
-                document.getElementById("alert").innerHTML=""
-                document.getElementById("commentArea").innerHTML=""
-                getAll()
+                console.log(y["message"]);
+                document.getElementById("alert").innerHTML="";
+                document.getElementById("commentArea").innerHTML="";
+                getAll();
             }
             else{
-                document.getElementById("alert").innerHTML=postRequest.responseText
+                var x= postRequest.responseText;
+                var y= eval("("+x+")");
+                console.log(y["message"]);
+                document.getElementById("alert").innerHTML=y["message"];
             }
         }
     }
@@ -96,16 +114,19 @@ function edit_text(){
     putRequest.onreadystatechange = function(){
         if (putData.readyState == 4){
             if (putData.status == 200){
-                var x = putRequest.response;
+                var x = putRequest.responseText;
                 var y = eval("("+x+")");
-                console.log(y["message"])
-                document.getElementById("alert").innerHTML=""
-                document.getElementById("id").innerHTML=''
-                document.getElementById("edit").innerHTML=''
-                getAll()
+                console.log(y["message"]);
+                document.getElementById("alert").innerHTML="";
+                document.getElementById("id").innerHTML='';
+                document.getElementById("edit").innerHTML='';
+                getAll();
             }
             else{
-                document.getElementById("alert")=putRequest.responseText
+                var x = putRequest.responseText;
+                var y = eval("("+x+")");
+                console.log(y["message"]);
+                document.getElementById("alert")=y["message"];
             }
         }
     }
@@ -121,14 +142,17 @@ function erase() {
     postRequest.onreadystatechange = function(){
         if (postData.readyState == 4){
             if (postData.status == 200){
-                var x = postRequest.response;
+                var x = postRequest.responseText;
                 var y = eval("("+x+")");
-                console.log(y["message"])
+                console.log(y["message"]);
                 document.getElementById("alert").innerHTML=""
                 getAll()
             }
             else{
-                document.getElementById("alert").innerHTML=postRequest.responseText
+                var x = postRequest.responseText;
+                var y = eval("("+x+")");
+                console.log(y["message"]);
+                document.getElementById("alert").innerHTML=y["message"];
             }
         }
     }
@@ -144,11 +168,16 @@ function logout(){
     postRequest.onreadystatechange = function() {
         if (postRequest.readyState == 4) {
             if (postRequest.status == 200) { 
-                console.log(postRequest.responseText)
-                document.getElementById("alert").innerHTML=""
-                window.location.href="enter.html"
+                var x = postRequest.responseText;
+                var y = eval("("+x+")");
+                console.log(y["message"]);
+                document.getElementById("alert").innerHTML="";
+                window.location.href="login.html";
             } else { 
-                document.getElementById("alert").innerHTML=postRequest.responseText
+                var x = postRequest.responseText;
+                var y = eval("("+x+")");
+                console.log(y["message"]);
+                document.getElementById("alert").innerHTML=y["message"];
         }
       }
    }
