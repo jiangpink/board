@@ -37,7 +37,7 @@ function change(){
     var obj = document.getElementById("gender1");
     var index =obj.selectedIndex;
     var postData = {
-        username:document.getElementById("nickname").innerText,
+        username:document.getElementById("username").innerText,
         nickname: document.getElementById("nickname1").value,
         age: document.getElementById("age1").value,
         gender: obj.options[index].value,
@@ -72,7 +72,7 @@ function logout(){
     var postRequest = new XMLHttpRequest()
     postRequest.open("POST", BaseURL + '/userinfo/logout') 
     var postData = {
-         username: document.getElementById("username").value
+         username: document.getElementById("username").innerText
     }
     postRequest.setRequestHeader("Content-type", "application/json")
     postRequest.send(JSON.stringify(postData))
