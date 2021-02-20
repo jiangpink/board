@@ -1,20 +1,6 @@
 var BaseURL = ''
 window.onload=function getLoginUser(){
-    var getRequest = new XMLHttpRequest()
-    getRequest.open('GET',BaseURL + '/username')
-    getRequest.send()
-    getRequest.onreadystatechange = function() {
-        if(getRequest.readyState == 4){
-            if(getRequest.status == 200){
-                var x= getRequest.responseText;
-                var y= eval("("+x+")");
-                document.getElementById("username").innerHTML=y["username"];
-            }
-            else{
-                console.log(getRequest.responseText)
-            }
-        }
-    }
+    document.getElementById("username").innerHTML = localStorage.getItem("username");
 }
 function getInfo(){
     var getRequest = new XMLHttpRequest()
@@ -48,14 +34,14 @@ getInfo()
 function change(){
     var postRequest = new XMLHttpRequest()
     postRequest.open('POST',BaseURL + '/userinfo/modification')
-    postRequest.send()
     var obj = document.getElementById("gender1");
     var index =obj.selectedIndex;
     var postData = {
+        username:document.getElementById("nickname").innerText,
         nickname: document.getElementById("nickname1").value,
         age: document.getElementById("age1").value,
         gender: obj.options[index].value,
-        password: document.getElementById("password1").value,
+        password: document.getElementById("password1").value
     }
     postRequest.setRequestHeader("Content-type","application/json")
     postRequest.send(JSON.stringify(postData))
@@ -97,6 +83,9 @@ function logout(){
                 var y = eval("("+x+")");
                 console.log(y["message"]);
                 document.getElementById("alert").innerHTML="";
+                var storage=window.localStorage;
+                storage.clear();
+                console.log(storage);
                 window.location.href="login.html";
             } else { 
                 var x = postRequest.responseText;

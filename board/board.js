@@ -1,20 +1,6 @@
 var BaseURL = ''
 window.onload=function getLoginUser(){
-    var getRequest = new XMLHttpRequest()
-    getRequest.open('GET',BaseURL + '/username')
-    getRequest.send()
-    getRequest.onreadystatechange = function() {
-        if(getRequest.readyState == 4){
-            if(getRequest.status == 200){
-                var x= getRequest.response;
-                var y= eval("("+x+")");
-                document.getElementById("username").innerHTML=y["username"];
-            }
-            else{
-                console.log(getRequest.responseText)
-            }
-        }
-    }
+    document.getElementById("username").innerHTML = localStorage.getItem("username");
 }
 function getAll(){
     var getRequest = new XMLHttpRequest()
@@ -34,14 +20,14 @@ function getAll(){
                     var username =board[i].username;
                     var id =board[i].id;
                     var a = document.createElement("div");
-                    if (username==document.getElementById("username").value){
+                    if (username==document.getElementById("username").innerText){
                         var a1 = document.createElement("div");
                         var b1 = document.createElement("div");
                         b1.innerHTML = nickname ;
                         b1.className = "nickname";
                         a1.appendChild(b1);
                         var b2 = document.createElement("div");
-                        b2.innerHTML = nickname ;
+                        b2.innerHTML = id ;
                         b2.className = "id";
                         a1.appendChild(b2);
                         a.appendChild(a1);
@@ -59,7 +45,7 @@ function getAll(){
                     var a3 = document.createElement("div");
                     a3.innerHTML = text ;
                     a3.className = "text";
-                    a3.style['overflow']='auto';
+                    a3.style['overflow']='hidden';
                     a.appendChild(a3);
                     var a4 = document.createElement("div");
                     a4.innerHTML = "编辑：" + last ;
@@ -75,10 +61,14 @@ function getAll(){
 getAll()
 
 function postComment(){
+    if (document.getElementById("commentArea").value == ""){
+        document.getElementById("alert").innerHTML= "留言内容不可为空"
+    }
+    else{
     var postRequest = new XMLHttpRequest()
     postRequest.open("POST",BaseURL+'/board/add')
     var postData = {
-        username:document.getElementById("username").value,
+        username:document.getElementById("username").innerText,
         text:document.getElementById("commentArea").value
     }
     postRequest.setRequestHeader("Content-type","application/json")
@@ -102,19 +92,31 @@ function postComment(){
         }
     }
 }
+}
 function edit_text(){
-    var putRequest = new XMLHttpRequest()
-    putRequest.open('PUT',BaseURL + '/board/modification')
-    var putData = {
+    if (document.getElementById("id").value == "" && document.getElementById("edit").value == ""){
+        document.getElementById("alert").innerHTML= "ID、修改内容不可为空"
+    }
+    else{
+    if (document.getElementById("id").value == ""){
+        document.getElementById("alert").innerHTML= "ID不可为空"
+    }
+    if (document.getElementById("edit").value == ""){
+        document.getElementById("alert").innerHTML= "修改内容不可为空"
+    }
+    else{
+    var postRequest = new XMLHttpRequest()
+    postRequest.open('POST',BaseURL + '/board/modification')
+    var postData = {
         id:document.getElementById("id").value,
         text: document.getElementById("edit").value
     }
-    putRequest.setRequestHeader("Content-type","application/json")
-    putRequest.send(JSON.stringify(putData))
-    putRequest.onreadystatechange = function(){
-        if (putData.readyState == 4){
-            if (putData.status == 200){
-                var x = putRequest.responseText;
+    postRequest.setRequestHeader("Content-type","application/json")
+    postRequest.send(JSON.stringify(postData))
+    postRequest.onreadystatechange = function(){
+        if (postRequest.readyState == 4){
+            if (postRequest.status == 200){
+                var x = postRequest.responseText;
                 var y = eval("("+x+")");
                 console.log(y["message"]);
                 document.getElementById("alert").innerHTML="";
@@ -123,7 +125,7 @@ function edit_text(){
                 getAll();
             }
             else{
-                var x = putRequest.responseText;
+                var x = postRequest.responseText;
                 var y = eval("("+x+")");
                 console.log(y["message"]);
                 document.getElementById("alert")=y["message"];
@@ -131,7 +133,12 @@ function edit_text(){
         }
     }
 }
+}
 function erase() {
+    if (document.getElementById("ID").value == ""){
+        document.getElementById("alert").innerHTML= "ID不可为空"
+    }
+    else{
     var postRequest = new XMLHttpRequest()
     postRequest.open('POST',BaseURL + '/board/deletion')
     var postData = {
@@ -157,11 +164,12 @@ function erase() {
         }
     }
 }
+}
 function logout(){
     var postRequest = new XMLHttpRequest()
     postRequest.open("POST", BaseURL + '/userinfo/logout') 
     var postData = {
-         username: document.getElementById("username").value
+         username: document.getElementById("username").innerText
     }
     postRequest.setRequestHeader("Content-type", "application/json")
     postRequest.send(JSON.stringify(postData))
@@ -172,6 +180,9 @@ function logout(){
                 var y = eval("("+x+")");
                 console.log(y["message"]);
                 document.getElementById("alert").innerHTML="";
+                var storage=window.localStorage;
+                storage.clear();
+                console.log(storage);
                 window.location.href="login.html";
             } else { 
                 var x = postRequest.responseText;
@@ -181,4 +192,5 @@ function logout(){
         }
       }
    }
+}
 }
