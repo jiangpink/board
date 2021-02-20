@@ -21,12 +21,6 @@ function getInfo(){
                 document.getElementById("age").innerHTML=age;
                 document.getElementById("gender").innerHTML=gender;
             }
-            else{
-                var x = getRequest.responseText;
-                var y = eval("("+x+")");
-                console.log(y["message"]);
-                document.getElementById("alert").innerHTML=y["message"];
-            }
         }
     }
 }
@@ -87,11 +81,7 @@ function logout(){
                 storage.clear();
                 console.log(storage);
                 window.location.href="login.html";
-            } else { 
-                var x = postRequest.responseText;
-                var y = eval("("+x+")");
-                console.log(y["message"]);
-            }
+            } 
       }
    }
 }

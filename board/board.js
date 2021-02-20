@@ -108,6 +108,7 @@ function edit_text(){
     var postRequest = new XMLHttpRequest()
     postRequest.open('POST',BaseURL + '/board/modification')
     var postData = {
+        username:document.getElementById("username").innerText,
         id:document.getElementById("id").value,
         text: document.getElementById("edit").value
     }
@@ -142,6 +143,7 @@ function erase() {
     var postRequest = new XMLHttpRequest()
     postRequest.open('POST',BaseURL + '/board/deletion')
     var postData = {
+        username:document.getElementById("username").innerText,
         id:document.getElementById("id").value
     }
     postRequest.setRequestHeader("Content-type","application/json")
