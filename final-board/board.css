@@ -1,0 +1,163 @@
+/*html {
+    height: 100vh;
+    width: 100vw;
+    font-size: 3vw;
+  }
+input{
+    font-size: 3vw;
+}
+body{
+    text-align: center;
+    background-color:AliceBlue;
+}
+.right{
+    float:right;
+}
+.clear{
+    clear:both;
+}
+.boardId{
+    width:5vw;
+}
+.text{
+    height:10vh;
+    width:85vw;
+}
+.id{
+    text-align: left;
+}
+.nickname{
+    text-align: left;
+}
+.date{
+    text-align: left;
+}
+.last{
+    text-align: left;
+}*/
+html {
+    height: 100vh;
+    width: 100vw;
+    font-size: 50px;
+  }
+input{
+    font-size: 25px;
+}
+body{
+    background-color:AliceBlue;
+}
+.clear{
+    text-align: center;
+}
+.right{
+    float:right;
+}
+.commentArea{
+    font-size:40px;
+    width:18rem;
+    height:4em;
+    overflow:auto;
+    border:1px solid rgb(224, 33, 208);
+}
+.guest{
+    font-size:40px;
+}
+/*h4{
+    margin-bottom: 2px;;
+}*/
+/*.boardId,.change-text{
+    text-align:left;
+    font-size:40px;
+    margin-left:0.2rem;
+}*/
+/*#id{
+    font-size:30px;
+    height:2em;
+    width:3em;
+    text-align:center;
+    border:1px solid rgb(224, 33, 208);
+}*/
+.clear{
+    clear:both;
+}
+a{
+    color:blueviolet;
+    padding:5px 0.2rem;
+    cursor:pointer;
+    text-decoration:none;
+}
+a:hover{
+    font-weight: 700;
+}
+.line{
+    height:1px;
+    background-color:#aeb9b9;
+    margin-top:12px;
+}
+#alert{
+    text-align:center;
+    margin-top:5px;
+    padding-top:5px;
+    padding-bottom:5px;
+    margin-bottom:0;
+    font-size: 20px;
+    color:rgb(219, 37, 37)
+}
+.board{
+    font-size:40px;
+    margin-left:0.2rem;
+    padding-left:0;
+    margin-top:50px;
+}
+li{
+    list-style:none;
+    margin-left: 0;
+}
+/*.head{
+    display:flex;
+    justify-content: space-between;
+}*/
+.id,.username{
+    /*font-size:30px;*/
+    display:none;
+}
+.text{
+    text-align:left;
+    border:1px solid rgb(16, 158, 144);
+    padding-left:0.3rem;
+    margin-bottom:0.5em;
+    margin-top:0.5em;
+}
+.nickname{
+    text-align: left;
+    font-weight:700;
+    height:1em;
+    margin-bottom:0.5em;
+    margin-top:0.5em;
+}
+.date{
+    text-align: left;
+    font-size:30px;
+    color:rgb(139, 135, 129);
+    height:1em;
+    margin-bottom:0.5em;
+    margin-top:0.5em;
+}
+.bottom,.last{
+    display:flex;
+    justify-content: space-between;
+}
+.last,.delete,.save,.cancel{
+    text-align: left;
+    font-size:30px;
+    color:rgb(139, 135, 129);
+    height:1em;
+    margin-bottom:0.5em;
+    margin-top:0.5em;
+}
+.edit{
+    text-align: left;
+    font-size:30px;
+    color:rgb(139, 135, 129);
+    padding-top:0;
+}
