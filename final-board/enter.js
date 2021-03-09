@@ -1,4 +1,4 @@
-var BaseURL = 'http://8.129.238.142'
+var BaseURL = 'http://8.129.238.142/dzy'
 function postUser(){
     if (document.getElementById("username").value == "" && document.getElementById("password").value == ""){
         document.getElementById("alert").innerHTML= "用户名、密码不可为空"

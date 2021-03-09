@@ -1,4 +1,4 @@
-var BaseURL = 'http://8.129.238.142'
+var BaseURL = 'http://8.129.238.142/dzy'
 window.onload=function getLoginUser(){
     document.getElementById("username").innerHTML = localStorage.getItem("username");
 }
