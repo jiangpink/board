@@ -19,7 +19,7 @@ function postUser(){
     }
     postRequest.setRequestHeader("Content-type","application/json")
     postRequest.send(JSON.stringify(postData))
-    postRequest.onreadychange = function(){
+    postRequest.onreadystatechange = function(){
         if (postRequest.readyState == 4){
             if (postRequest.status ==200) {
                 var name = document.getElementById("username").value;

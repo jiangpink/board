@@ -21,7 +21,10 @@ function getAll(){
         if(getRequest.readyState == 4){
             if(getRequest.status == 200){
                 let obj = JSON.parse(getRequest.responseText) ;
+                console.log(getRequest.responseText);
                 let board = obj.boards ;
+                console.log(board);
+                //let boards=board.0;
                 document.getElementsByClassName('board')[0].innerHTML = "";
                 for (var i=0 ; i < board.length ; i++ ){
                     var id =board[i].id;
@@ -88,12 +91,14 @@ function postComment(){
         var date1=time.getDate();
         var hour=time.getHours(); 
         var minute=time.getMinutes(); 
+        var second=time.getSeconds();
         var postRequest = new XMLHttpRequest()
         postRequest.open("POST",BaseURL+'/board/add')
         var postData = {
             username:document.getElementById("username").innerText,
             text:document.getElementById("commentArea").value,
-            date:year+"年"+month+"月"+date1+"日"+" "+hour+":"+minute
+            date:year+"-"+month+"-"+date1+" "+hour+":"+minute+":"+second,
+            last:year+"-"+month+"-"+date1+" "+hour+":"+minute+":"+second
         }
         postRequest.setRequestHeader("Content-type","application/json")
         postRequest.send(JSON.stringify(postData))
@@ -104,8 +109,8 @@ function postComment(){
                     console.log(obj.message);
                     var id=obj.id;
                     var nickname=obj.nickname;
-                    var date = year+"年"+month+"月"+date1+"日"+" "+hour+":"+minute;
-                    var last = year+"年"+month+"月"+date1+"日"+" "+hour+":"+minute;
+                    var date = year+"-"+month+"-"+date1+" "+hour+":"+minute+second;
+                    var last = year+"-"+month+"-"+date1+" "+hour+":"+minute+second;
                     var text = document.getElementById("commentArea").value ;
                     var username = document.getElementById("username").innerText;
                     var a = document.createElement("li");
@@ -160,7 +165,26 @@ for (var i = 0; i < btn.length; i++) {
             edit_text()
         }
         if(this.innerHTML=="删除"){
-            erase()
+            var postRequest = new XMLHttpRequest()
+    postRequest.open('POST',BaseURL + '/board/deletion')
+    var postData = {
+        username:document.getElementById("username").innerText,
+        id:this.parentNode.parentNode.childNodes[3].innerText
+    }
+    postRequest.setRequestHeader("Content-type","application/json")
+    postRequest.send(JSON.stringify(postData))
+    postRequest.onreadystatechange = function(){
+        if (postData.readyState == 4){
+            if (postData.status == 200){
+                var x = postRequest.responseText;
+                var y = eval("("+x+")");
+                console.log(y["message"]);
+                document.getElementById("alert").innerHTML=""
+                var ul = document.querySelector('ul');
+                ul.removeChild(this.parentNode.parentNode);
+            }
+        }
+    }
         }
     }
 }
@@ -189,7 +213,7 @@ function edit_text(){
                     var postData = {
                     id:this.parentNode.parentNode.parentNode.childNodes[3].innerText,
                     text:this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value,
-                    last:year+"年"+month+"月"+date1+"日"+" "+hour+":"+minute
+                    last:year+"-"+month+"-"+date1+" "+hour+":"+minute+second
                     }
                     postRequest.setRequestHeader("Content-type","application/json")
                     postRequest.send(JSON.stringify(postData))
@@ -201,7 +225,7 @@ function edit_text(){
                                 console.log(y["message"]);
                                 document.getElementById("alert").innerHTML="";
                                 this.parentNode.parentNode.parentNode.childNodes[9].innerHTML=this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value;
-                                this.parentNode.innerHTML='<a href = "javascript:;" class="edit">编辑</a>'+":" + year+"年"+month+"月"+date1+"日"+" "+hour+":"+minute;
+                                this.parentNode.innerHTML='<a href = "javascript:;" class="edit">编辑</a>'+":" + year+"-"+month+"-"+date1+"-"+" "+hour+":"+minute+second;
                             }
                         }
                     }
@@ -216,27 +240,8 @@ function edit_text(){
     
     
 
-function erase() {
-    var postRequest = new XMLHttpRequest()
-    postRequest.open('POST',BaseURL + '/board/deletion')
-    var postData = {
-        username:document.getElementById("username").innerText,
-        id:this.parentNode.parentNode.childNodes[3].innerText
-    }
-    postRequest.setRequestHeader("Content-type","application/json")
-    postRequest.send(JSON.stringify(postData))
-    postRequest.onreadystatechange = function(){
-        if (postData.readyState == 4){
-            if (postData.status == 200){
-                var x = postRequest.responseText;
-                var y = eval("("+x+")");
-                console.log(y["message"]);
-                document.getElementById("alert").innerHTML=""
-                var ul = document.querySelector('ul');
-                ul.removeChild(this.parentNode.parentNode);
-            }
-        }
-    }
+
+    
 }
 
 
@@ -263,4 +268,4 @@ function logout(){
             } 
         }
     }
-}}
+}
