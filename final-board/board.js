@@ -24,13 +24,14 @@ function getAll(){
                 console.log(getRequest.responseText);
                 let board = obj.boards ;
                 console.log(board);
-                //let boards=board.0;
+                console.log(Object.keys(board).length)
+                console.log(board["0"]);
                 document.getElementsByClassName('board')[0].innerHTML = "";
-                for (var i=0 ; i < board.length ; i++ ){
+                for (var i=0 ; i < Object.keys(board).length ; i++ ){
                     var id =board[i].id;
                     var nickname = board[i].nickname;
                     var date = board[i].date;
-                    var last = board[i].last;
+                    var last = board[i].last;i
                     var text = board[i].text;
                     var username =board[i].username;
                     var a = document.createElement("li");
@@ -109,8 +110,8 @@ function postComment(){
                     console.log(obj.message);
                     var id=obj.id;
                     var nickname=obj.nickname;
-                    var date = year+"-"+month+"-"+date1+" "+hour+":"+minute+second;
-                    var last = year+"-"+month+"-"+date1+" "+hour+":"+minute+second;
+                    var date = year+"-"+month+"-"+date1+" "+hour+":"+minute+":"+second;
+                    var last = year+"-"+month+"-"+date1+" "+hour+":"+minute+":"+second;
                     var text = document.getElementById("commentArea").value ;
                     var username = document.getElementById("username").innerText;
                     var a = document.createElement("li");
@@ -158,81 +159,73 @@ for (var i = 0; i < btn.length; i++) {
     btn[i].onclick = function(){
         if(this.innerText=="编辑"){
             var text = this.parentNode.parentNode.parentNode.childNodes[9].innerText;
+            console.log(this.parentNode.parentNode.parentNode.childNodes[9].innerText);
             var last = this.parentNode.innerText;
             this.parentNode.parentNode.parentNode.childNodes[9].innerHTML='<textarea>'+text+'</textarea>';
             this.parentNode.innerHTML='<a href = "javascript:;" class="save">'+"保存"+"</a>"
             this.parentNode.innerHTML+='<a href = "javascript:;" class="cancel">'+"取消"+"</a>"
-            edit_text()
+            for (var i = 0; i < btn.length; i++) {
+                btn[i].onclick = function(){
+                    if(this.innerText="保存"){
+                        if(this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value==""){
+                            alert("修改内容不可为空")
+                        }
+                        else{
+                            var postRequest = new XMLHttpRequest()
+                            postRequest.open('POST',BaseURL + '/board/modification')
+                            var time=new Date();
+                            var year=time.getFullYear();
+                            var month=time.getMonth()+1;
+                            var date1=time.getDate();
+                            var hour=time.getHours(); 
+                            var minute=time.getMinutes();
+                            var postData = {
+                            id:this.parentNode.parentNode.parentNode.childNodes[3].innerText,
+                            text:this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value,
+                            last:year+"-"+month+"-"+date1+" "+hour+":"+minute+":"+second
+                            }
+                            postRequest.setRequestHeader("Content-type","application/json")
+                            postRequest.send(JSON.stringify(postData))
+                            postRequest.onreadystatechange = function(){
+                                if (postRequest.readyState == 4){
+                                    if (postRequest.status == 200){
+                                        var x = postRequest.responseText;
+                                        var y = eval("("+x+")");
+                                        console.log(y["message"]);
+                                        document.getElementById("alert").innerHTML="";
+                                        this.parentNode.parentNode.parentNode.childNodes[9].innerHTML=this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value;
+                                        this.parentNode.innerHTML='<a href = "javascript:;" class="edit">编辑</a>'+":" + year+"-"+month+"-"+date1+"-"+" "+hour+":"+minute+":"+second;
+                                    }
+                                }
+                            }
+                        }
+                    if(this.innerText="取消"){
+                        this.parentNode.parentNode.parentNode.childNodes[9].innerHTML=text;
+                        this.parentNode.innerHTML=last;
+                    }
+                }
+            }
         }
         if(this.innerHTML=="删除"){
             var postRequest = new XMLHttpRequest()
-    postRequest.open('POST',BaseURL + '/board/deletion')
-    var postData = {
-        username:document.getElementById("username").innerText,
-        id:this.parentNode.parentNode.childNodes[3].innerText
-    }
-    postRequest.setRequestHeader("Content-type","application/json")
-    postRequest.send(JSON.stringify(postData))
-    postRequest.onreadystatechange = function(){
-        if (postData.readyState == 4){
-            if (postData.status == 200){
-                var x = postRequest.responseText;
-                var y = eval("("+x+")");
-                console.log(y["message"]);
-                document.getElementById("alert").innerHTML=""
-                var ul = document.querySelector('ul');
-                ul.removeChild(this.parentNode.parentNode);
+            postRequest.open('POST',BaseURL + '/board/deletion')
+            var postData = {
+                username:document.getElementById("username").innerText,
+                id:this.parentNode.parentNode.childNodes[3].innerText
             }
-        }
-    }
-        }
-    }
-}
-
-   
-   
-   
-   
-   
-function edit_text(){
-    for (var i = 0; i < btn.length; i++) {
-        btn[i].onclick = function(){
-            if(this.innerText="保存"){
-                if(this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value==""){
-                    alert("修改内容不可为空")
-                }
-                else{
-                    var postRequest = new XMLHttpRequest()
-                    postRequest.open('POST',BaseURL + '/board/modification')
-                    var time=new Date();
-                    var year=time.getFullYear();
-                    var month=time.getMonth()+1;
-                    var date1=time.getDate();
-                    var hour=time.getHours(); 
-                    var minute=time.getMinutes();
-                    var postData = {
-                    id:this.parentNode.parentNode.parentNode.childNodes[3].innerText,
-                    text:this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value,
-                    last:year+"-"+month+"-"+date1+" "+hour+":"+minute+second
-                    }
-                    postRequest.setRequestHeader("Content-type","application/json")
-                    postRequest.send(JSON.stringify(postData))
-                    postRequest.onreadystatechange = function(){
-                        if (postRequest.readyState == 4){
-                            if (postRequest.status == 200){
-                                var x = postRequest.responseText;
-                                var y = eval("("+x+")");
-                                console.log(y["message"]);
-                                document.getElementById("alert").innerHTML="";
-                                this.parentNode.parentNode.parentNode.childNodes[9].innerHTML=this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value;
-                                this.parentNode.innerHTML='<a href = "javascript:;" class="edit">编辑</a>'+":" + year+"-"+month+"-"+date1+"-"+" "+hour+":"+minute+second;
-                            }
-                        }
+            postRequest.setRequestHeader("Content-type","application/json")
+            postRequest.send(JSON.stringify(postData))
+            postRequest.onreadystatechange = function(){
+                if (postData.readyState == 4){
+                    if (postData.status == 200){
+                        var x = postRequest.responseText;
+                        var y = eval("("+x+")");
+                        console.log(y["message"]);
+                        document.getElementById("alert").innerHTML=""
+                        var ul = document.querySelector('ul');
+                        ul.removeChild(this.parentNode.parentNode);
                     }
                 }
-            if(this.innerText="取消"){
-                this.parentNode.parentNode.parentNode.childNodes[9].innerHTML=text;
-                this.parentNode.innerHTML=last;
             }
         }
     }
