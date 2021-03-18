@@ -49,6 +49,9 @@ body{
 .clear{
     text-align: center;
 }
+#username{
+    display:none;
+}
 .right{
     float:right;
 }
@@ -103,6 +106,9 @@ a:hover{
     font-size: 20px;
     color:rgb(219, 37, 37)
 }
+/*#text,#last{
+    display:none;
+}*/
 .board{
     font-size:40px;
     margin-left:0.2rem;
@@ -147,7 +153,7 @@ li{
     display:flex;
     justify-content: space-between;
 }
-.last,.delete,.save,.cancel{
+.last,.delete,.save,.countermand{
     text-align: left;
     font-size:30px;
     color:rgb(139, 135, 129);

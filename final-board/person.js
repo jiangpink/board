@@ -1,10 +1,11 @@
-var BaseURL = 'http://8.129.238.142/dzy'
+var BaseURL = '/api/dzy'
 window.onload=function getLoginUser(){
     document.getElementById("username").innerHTML = localStorage.getItem("username");
 }
 function getInfo(){
     var getRequest = new XMLHttpRequest()
     getRequest.open('GET',BaseURL + "/userinfo")
+    getRequest.withCredentials = true;
     getRequest.send()
     getRequest.onreadystatechange = function(){
         if(getRequest.readyState ==4 ) {
@@ -28,6 +29,7 @@ getInfo()
 function change(){
     var postRequest = new XMLHttpRequest()
     postRequest.open('POST',BaseURL + '/userinfo/modification')
+    postRequest.withCredentials = true;
     var obj = document.getElementById("gender1");
     var index =obj.selectedIndex;
     var postData = {
@@ -37,6 +39,7 @@ function change(){
         gender: obj.options[index].value,
         password: document.getElementById("password1").value
     }
+    console.log(obj.options[index].value);
     postRequest.setRequestHeader("Content-type","application/json")
     postRequest.send(JSON.stringify(postData))
     postRequest.onreadystatechange = function(){
@@ -65,6 +68,7 @@ function change(){
 function logout(){
     var postRequest = new XMLHttpRequest()
     postRequest.open("POST", BaseURL + '/userinfo/logout') 
+    postRequest.withCredentials = true;
     var postData = {
          username: document.getElementById("username").innerText
     }
@@ -80,7 +84,7 @@ function logout(){
                 var storage=window.localStorage;
                 storage.clear();
                 console.log(storage);
-                window.location.href="login.html";
+                window.location.href="index.html";
             } 
       }
    }

@@ -1,11 +1,11 @@
-var BaseURL = 'http://8.129.238.142/dzy'
+var BaseURL = '/api/dzy'
 window.onload=function getLoginUser(){
     if(localStorage.getItem("username")){
-    document.getElementById("username").innerHTML = localStorage.getItem("username");
+        document.getElementById("username").innerHTML = localStorage.getItem("username");
     }
     else{
         document.getElementById("username").innerHTML = "";
-        document.getElementById("postComment").innerHTML = '<p class="guest">要留言请<a href="login.html">登录</a></p>';
+        document.getElementById("postComment").innerHTML = '<p class="guest">要留言请<a href="index.html">登录</a></p>';
         var a=document.getElementById("logout");
         a.setAttribute("style","display:none");
         var b=document.getElementById("person");
@@ -16,6 +16,7 @@ window.onload=function getLoginUser(){
 function getAll(){
     var getRequest = new XMLHttpRequest()
     getRequest.open('GET',BaseURL + '/boards/all')
+    getRequest.withCredentials = true;
     getRequest.send()
     getRequest.onreadystatechange = function() {
         if(getRequest.readyState == 4){
@@ -60,10 +61,10 @@ function getAll(){
                         var b = document.createElement("div");
                         b.className = "bottom";
                         var a6 = document.createElement("p");
-                        a6.innerHTML = '<a href = "javascript:;" class="edit">编辑</a>'+":" + last ;
+                        a6.innerHTML = '<a href = "javascript:;" class="edit" onclick="edit(this)">编辑</a>'+":" + last ;
                         a6.className = "last";
                         b.appendChild(a6);
-                        b.innerHTML += '<a href = "javascript:;" class="delete">删除</a>';
+                        b.innerHTML += '<a href = "javascript:;" class="delete" onclick="deletion(this)">删除</a>';
                         a.appendChild(b);
                     }
                     else{
@@ -95,6 +96,7 @@ function postComment(){
         var second=time.getSeconds();
         var postRequest = new XMLHttpRequest()
         postRequest.open("POST",BaseURL+'/board/add')
+        postRequest.withCredentials = true;
         var postData = {
             username:document.getElementById("username").innerText,
             text:document.getElementById("commentArea").value,
@@ -139,10 +141,10 @@ function postComment(){
                     var b = document.createElement("div");
                     b.className = "bottom";
                     var a6 = document.createElement("p");
-                    a6.innerHTML = '<a href = "javascript:;" class="edit">编辑</a>'+":" + last ;
+                    a6.innerHTML = '<a href = "javascript:;" class="edit" onclick="edit(this)">编辑</a>'+":" + last ;
                     a6.className = "last";
                     b.appendChild(a6);
-                    b.innerHTML += '<a href = "javascript:;" class="delete">删除</a>';
+                    b.innerHTML += '<a href = "javascript:;" class="delete" onclick="deletion(this)">删除</a>';
                     a.appendChild(b);
                     document.getElementsByClassName("board")[0].appendChild(a);  
                     document.getElementById("alert").innerHTML="";
@@ -154,87 +156,170 @@ function postComment(){
 }
 
 
-var btn = document.querySelectorAll('a');
-for (var i = 0; i < btn.length; i++) {
-    btn[i].onclick = function(){
-        if(this.innerText=="编辑"){
-            var text = this.parentNode.parentNode.parentNode.childNodes[9].innerText;
-            console.log(this.parentNode.parentNode.parentNode.childNodes[9].innerText);
-            var last = this.parentNode.innerText;
-            this.parentNode.parentNode.parentNode.childNodes[9].innerHTML='<textarea>'+text+'</textarea>';
-            this.parentNode.innerHTML='<a href = "javascript:;" class="save">'+"保存"+"</a>"
-            this.parentNode.innerHTML+='<a href = "javascript:;" class="cancel">'+"取消"+"</a>"
-            for (var i = 0; i < btn.length; i++) {
-                btn[i].onclick = function(){
-                    if(this.innerText="保存"){
-                        if(this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value==""){
-                            alert("修改内容不可为空")
-                        }
-                        else{
-                            var postRequest = new XMLHttpRequest()
-                            postRequest.open('POST',BaseURL + '/board/modification')
-                            var time=new Date();
-                            var year=time.getFullYear();
-                            var month=time.getMonth()+1;
-                            var date1=time.getDate();
-                            var hour=time.getHours(); 
-                            var minute=time.getMinutes();
-                            var postData = {
-                            id:this.parentNode.parentNode.parentNode.childNodes[3].innerText,
-                            text:this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value,
-                            last:year+"-"+month+"-"+date1+" "+hour+":"+minute+":"+second
-                            }
-                            postRequest.setRequestHeader("Content-type","application/json")
-                            postRequest.send(JSON.stringify(postData))
-                            postRequest.onreadystatechange = function(){
-                                if (postRequest.readyState == 4){
-                                    if (postRequest.status == 200){
-                                        var x = postRequest.responseText;
-                                        var y = eval("("+x+")");
-                                        console.log(y["message"]);
-                                        document.getElementById("alert").innerHTML="";
-                                        this.parentNode.parentNode.parentNode.childNodes[9].innerHTML=this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value;
-                                        this.parentNode.innerHTML='<a href = "javascript:;" class="edit">编辑</a>'+":" + year+"-"+month+"-"+date1+"-"+" "+hour+":"+minute+":"+second;
-                                    }
-                                }
-                            }
-                        }
-                    if(this.innerText="取消"){
-                        this.parentNode.parentNode.parentNode.childNodes[9].innerHTML=text;
-                        this.parentNode.innerHTML=last;
-                    }
-                }
-            }
+//var btn = document.querySelectorAll('a');
+//for (var i = 0; i < btn.length; i++) {
+    //btn[i].onclick = function(){
+        //if(this.innerText=="编辑"){
+            //var text = this.parentNode.parentNode.parentNode.childNodes[9].innerText;
+            //console.log(this.parentNode.parentNode.parentNode.childNodes[9].innerText);
+            //var last = this.parentNode.innerText;
+            //this.parentNode.parentNode.parentNode.childNodes[9].innerHTML='<textarea>'+text+'</textarea>';
+            //this.parentNode.innerHTML='<a href = "javascript:;" class="save">'+"保存"+"</a>"
+            //this.parentNode.innerHTML+='<a href = "javascript:;" class="cancel">'+"取消"+"</a>"
+            //for (var i = 0; i < btn.length; i++) {
+                //btn[i].onclick = function(){
+                    //if(this.innerText="保存"){
+                        //if(this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value==""){
+                            //alert("修改内容不可为空")
+                        //}
+                        //else{
+                           //var postRequest = new XMLHttpRequest()
+                            //postRequest.open('POST',BaseURL + '/board/modification')
+                            //var time=new Date();
+                            //var year=time.getFullYear();
+                            //var month=time.getMonth()+1;
+                            //var date1=time.getDate();
+                            //var hour=time.getHours(); 
+                            //var minute=time.getMinutes();
+                            //var postData = {
+                            //id:this.parentNode.parentNode.parentNode.childNodes[3].innerText,
+                            //text:this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value,
+                            //last:year+"-"+month+"-"+date1+" "+hour+":"+minute+":"+second
+                            //}
+                            //postRequest.setRequestHeader("Content-type","application/json")
+                            //postRequest.send(JSON.stringify(postData))
+                            //postRequest.onreadystatechange = function(){
+                                //if (postRequest.readyState == 4){
+                                    //if (postRequest.status == 200){
+                                        //var x = postRequest.responseText;
+                                        //var y = eval("("+x+")");
+                                        //console.log(y["message"]);
+                                        //document.getElementById("alert").innerHTML="";
+                                        //this.parentNode.parentNode.parentNode.childNodes[9].innerHTML=this.parentNode.parentNode.parentNode.childNodes[9].childNodes[0].value;
+                                        //this.parentNode.innerHTML='<a href = "javascript:;" class="edit">编辑</a>'+":" + year+"-"+month+"-"+date1+"-"+" "+hour+":"+minute+":"+second;
+                                    //}
+                                //}
+                            //}
+                        //}
+                    //if(this.innerText="取消"){
+                        //this.parentNode.parentNode.parentNode.childNodes[9].innerHTML=text;
+                        //this.parentNode.innerHTML=last;
+                    //}
+                //}
+            //}
+        //}
+        //if(this.innerHTML=="删除"){
+            //var postRequest = new XMLHttpRequest()
+            //postRequest.open('POST',BaseURL + '/board/deletion')
+            //var postData = {
+                //username:document.getElementById("username").innerText,
+                //id:this.parentNode.parentNode.childNodes[3].innerText
+            //}
+            //postRequest.setRequestHeader("Content-type","application/json")
+            //postRequest.send(JSON.stringify(postData))
+            //postRequest.onreadystatechange = function(){
+                //if (postData.readyState == 4){
+                    //if (postData.status == 200){
+                        //var x = postRequest.responseText;
+                        //var y = eval("("+x+")");
+                        //console.log(y["message"]);
+                        //document.getElementById("alert").innerHTML=""
+                        //var ul = document.querySelector('ul');
+                        //ul.removeChild(this.parentNode.parentNode);
+                    //}
+                //}
+            //}
+        //}
+    //}
+//}
+    
+    
+
+
+    
+//}
+function edit(e){
+    var text = e.parentNode.parentNode.parentNode.childNodes[4].innerText;
+    document.getElementById("text").innerHTML=text;
+    console.log(document.getElementById("text").innerText);
+    var last = e.parentNode.innerText;
+    document.getElementById("last").innerHTML=last;
+    console.log(document.getElementById("last").innerText);
+    console.log(e.parentNode.parentNode.parentNode.childNodes[1].innerText);
+    e.parentNode.parentNode.parentNode.childNodes[4].innerHTML='<textarea>'+text+'</textarea>';
+    e.parentNode.innerHTML='<a href = "javascript:;" class="save" onclick="save(this)">保存</a>'+'<a href = "javascript:;" class="countermand" onclick="countermand(this)">取消</a>';
+}
+
+function save(e){
+    if(e.parentNode.parentNode.parentNode.childNodes[4].childNodes[0].value==""){
+        alert("修改内容不可为空")
+    }
+    else{
+        var time=new Date();
+        var year=time.getFullYear();
+        var month=time.getMonth()+1;
+        var date1=time.getDate();
+        var hour=time.getHours(); 
+        var minute=time.getMinutes();
+        var second=time.getSeconds();
+        console.log(e.parentNode.parentNode.parentNode.childNodes[1].innerText);
+        console.log(e.parentNode.parentNode.parentNode.childNodes[4].childNodes[0].value);
+        console.log(year+"-"+month+"-"+date1+" "+hour+":"+minute+":"+second);
+        var postRequest = new XMLHttpRequest()
+        postRequest.open('POST',BaseURL + '/board/modification')
+        postRequest.withCredentials = true;
+        var postData = {
+            id:e.parentNode.parentNode.parentNode.childNodes[1].innerText,
+            text:e.parentNode.parentNode.parentNode.childNodes[4].childNodes[0].value,
+            last:year+"-"+month+"-"+date1+" "+hour+":"+minute+":"+second
         }
-        if(this.innerHTML=="删除"){
-            var postRequest = new XMLHttpRequest()
-            postRequest.open('POST',BaseURL + '/board/deletion')
-            var postData = {
-                username:document.getElementById("username").innerText,
-                id:this.parentNode.parentNode.childNodes[3].innerText
-            }
-            postRequest.setRequestHeader("Content-type","application/json")
-            postRequest.send(JSON.stringify(postData))
-            postRequest.onreadystatechange = function(){
-                if (postData.readyState == 4){
-                    if (postData.status == 200){
-                        var x = postRequest.responseText;
-                        var y = eval("("+x+")");
-                        console.log(y["message"]);
-                        document.getElementById("alert").innerHTML=""
-                        var ul = document.querySelector('ul');
-                        ul.removeChild(this.parentNode.parentNode);
-                    }
+        postRequest.setRequestHeader("Content-type","application/json")
+        postRequest.send(JSON.stringify(postData))
+        postRequest.onreadystatechange = function(){
+            if (postRequest.readyState == 4){
+                if (postRequest.status == 200){
+                    var x = postRequest.responseText;
+                    var y = eval("("+x+")");
+                    console.log(y["message"]);
+                    document.getElementById("alert").innerHTML="";
+                    document.getElementById("text").innerHTML=e.parentNode.parentNode.parentNode.childNodes[4].childNodes[0].value;
+                    e.parentNode.parentNode.parentNode.childNodes[4].innerHTML=document.getElementById("text").innerText;
+                    e.parentNode.innerHTML='<a href = "javascript:;" class="edit">编辑</a>'+":" + year+"-"+month+"-"+date1+"-"+" "+hour+":"+minute+":"+second;
                 }
             }
         }
     }
 }
-    
-    
 
+function countermand(e){
+    e.parentNode.parentNode.parentNode.childNodes[4].innerHTML=document.getElementById("text").innerText;
+    e.parentNode.innerHTML=document.getElementById("last").innerText;
+    document.getElementById("text").innerHTML="";
+    document.getElementById("last").innerHTML="";
+}
 
-    
+function deletion(e){
+    var postRequest = new XMLHttpRequest()
+    postRequest.open('POST',BaseURL + '/board/deletion')
+    postRequest.withCredentials = true;
+    var postData = {
+        username:document.getElementById("username").innerText,
+        id:e.parentNode.parentNode.childNodes[1].innerText
+    }
+    postRequest.setRequestHeader("Content-type","application/json")
+    postRequest.send(JSON.stringify(postData))
+    postRequest.onreadystatechange = function(){
+        if (postData.readyState == 4){
+            if (postData.status == 200){
+                var x = postRequest.responseText;
+                var y = eval("("+x+")");
+                console.log(y["message"]);
+                document.getElementById("alert").innerHTML=""
+                var ul = document.querySelector('ul');
+                ul.removeChild(e.parentNode.parentNode);
+            }
+        }
+    }
 }
 
 
@@ -242,6 +327,7 @@ for (var i = 0; i < btn.length; i++) {
 function logout(){
     var postRequest = new XMLHttpRequest()
     postRequest.open("POST", BaseURL + '/userinfo/logout') 
+    postRequest.withCredentials = true;
     var postData = {
          username: document.getElementById("username").innerText
     }
@@ -257,7 +343,7 @@ function logout(){
                 var storage=window.localStorage;
                 storage.clear();
                 console.log(storage);
-                window.location.href="login.html";
+                window.location.href="index.html";
             } 
         }
     }

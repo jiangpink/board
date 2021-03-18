@@ -12,9 +12,9 @@ body{
 .right{
     float:right;
 }
-.username{
+/*.username{
     display:none;
-}
+}*/
 .info-box{
     clear:both;
 }
